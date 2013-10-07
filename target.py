@@ -2,19 +2,17 @@ from errors import InvalidTargetError
 
 class FatekTarget(object):
     client = None # pymodbus client
-
-    number = None # int
-    target = None # char
+    target, number = None, None # str, int
     cv = False # bool - current value - (coil/register access)
-    read, write = None, None # functions
+    read, write = None, None # access functions
 
     def __init__(self, client, symbol_str, cv=False):
         self.client = client
         self.cv = cv
 
         self._read_symbol(symbol_str)
-        self._verify_number()
 
+        self._verify_number()
         self._choose_functions()
         self._calculate_offset()
 
@@ -35,20 +33,23 @@ class FatekTarget(object):
             self.write = self._write_holding_r
 
     def _calculate_offset(self):
-        ## coils:
-        # Y(0-255) : 0 - 255
-        # X(0-255) : 1000 - 1255
-        # M(0-2001): 2000 - 4001
-        # S(0-999) : 6000 - 6999
-        # T(0-255) : 9000 - 9255 (cv=False)
-        # C(0-255) : 9500 - 9755 (cv=False)
-        ## registers
-        # R(0-4167)    : 0    - 4167
-        # R(5000-5998) : 5000 - 5998 (holding or ror)
-        # D(0-2998)    : 6000 - 8998
-        # T(0-255)     : 9000 - 9255 (cv = True)
-        # C(0-199)     : 9500 - 9699 (16bit, cv=True)
-        # C(200-255)   : 9700 - 9811 (32bit, cv=True) double offset
+        """
+            # coils:
+            Y(0-255) : 0 - 255
+            X(0-255) : 1000 - 1255
+            M(0-2001): 2000 - 4001
+            S(0-999) : 6000 - 6999
+            T(0-255) : 9000 - 9255 (cv=False)
+            C(0-255) : 9500 - 9755 (cv=False)
+
+            # registers
+            R(0-4167)    : 0    - 4167
+            R(5000-5998) : 5000 - 5998 (holding or ror)
+            D(0-2998)    : 6000 - 8998
+            T(0-255)     : 9000 - 9255 (cv = True)
+            C(0-199)     : 9500 - 9699 (16bit, cv=True)
+            C(200-255)   : 9700 - 9811 (32bit, cv=True) double offset
+        """
 
         target = self.target
         number = self.number

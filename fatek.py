@@ -1,5 +1,3 @@
-#!/usr/bin/env python2
-
 from pymodbus.client.sync import ModbusTcpClient
 import logging
 
@@ -10,7 +8,7 @@ log = logging.getLogger()
 log.setLevel(logging.DEBUG)
 
 class Fatek(object):
-    def __init__(self, address = '192.168.13.250'):
+    def __init__(self, address='192.168.13.250'):
         self.address = address
         self.client = ModbusTcpClient(address)
 
