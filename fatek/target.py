@@ -109,3 +109,6 @@ class FatekTarget(object):
     def _write_holding_r(self, value):
         return self.client.write_register(self.number, value)
 
+
+    def read_all(self):
+        return self.client.read_coils(self.number, 20) # (start coil, number of readed bits)

@@ -1,1 +1,4 @@
 *.pyc
+build/
+dist/
+fatek_fbs_lib.egg-info/

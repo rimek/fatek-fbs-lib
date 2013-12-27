@@ -20,3 +20,6 @@ class Fatek(object):
         t = FatekTarget(self.client, symbol)
         return t.write(value)
 
+    def read_all(self, symbol):
+        t = FatekTarget(self.client, symbol)
+        return t.read_all()
