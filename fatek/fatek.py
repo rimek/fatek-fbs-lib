@@ -8,7 +8,7 @@ log = logging.getLogger()
 log.setLevel(logging.DEBUG)
 
 class Fatek(object):
-    def __init__(self, address='192.168.13.250'):
+    def __init__(self, address='192.168.1.250'):
         self.address = address
         self.client = ModbusTcpClient(address)
 

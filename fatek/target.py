@@ -3,12 +3,12 @@ from errors import InvalidTargetError
 class FatekTarget(object):
     client = None # pymodbus client
     target, number = None, None # str, int
-    cv = False # bool - current value - (coil/register access)
+    current_value = False # bool - current value - (coil/register access)
     read, write = None, None # access functions
 
-    def __init__(self, client, symbol_str, cv=False):
+    def __init__(self, client, symbol_str, current_value=False):
         self.client = client
-        self.cv = cv
+        self.current_value = current_value
 
         self._read_symbol(symbol_str)
 
@@ -23,12 +23,12 @@ class FatekTarget(object):
 
     def _choose_functions(self):
         target = self.target
-        cv = self.cv
+        current_value = self.current_value
 
-        if target in ['Y', 'X', 'M', 'S'] or (cv == False and target in ['T', 'C']):
+        if target in ['Y', 'X', 'M', 'S'] or (current_value == False and target in ['T', 'C']):
             self.read = self._read_coil
             self.write = self._write_coil
-        elif target in ['R', 'D'] or (cv == True and target in ['T', 'C']):
+        elif target in ['R', 'D'] or (current_value == True and target in ['T', 'C']):
             self.read = self._read_holding_r
             self.write = self._write_holding_r
 
@@ -39,21 +39,21 @@ class FatekTarget(object):
             X(0-255) : 1000 - 1255
             M(0-2001): 2000 - 4001
             S(0-999) : 6000 - 6999
-            T(0-255) : 9000 - 9255 (cv=False)
-            C(0-255) : 9500 - 9755 (cv=False)
+            T(0-255) : 9000 - 9255 (current_value=False)
+            C(0-255) : 9500 - 9755 (current_value=False)
 
             # registers
             R(0-4167)    : 0    - 4167
             R(5000-5998) : 5000 - 5998 (holding or ror)
             D(0-2998)    : 6000 - 8998
-            T(0-255)     : 9000 - 9255 (cv = True)
-            C(0-199)     : 9500 - 9699 (16bit, cv=True)
-            C(200-255)   : 9700 - 9811 (32bit, cv=True) double offset
+            T(0-255)     : 9000 - 9255 (current_value = True)
+            C(0-199)     : 9500 - 9699 (16bit, current_value=True)
+            C(200-255)   : 9700 - 9811 (32bit, current_value=True) double offset
         """
 
         target = self.target
         number = self.number
-        cv = self.cv
+        current_value = self.current_value
 
         offset_dict = {
             'Y': 0,
@@ -67,7 +67,7 @@ class FatekTarget(object):
         }
 
         offset = offset_dict[target]
-        if target == 'C' and cv == True and number >= 200:
+        if target == 'C' and current_value == True and number >= 200:
             number %= 200
             offset = 9700 + 2*(number)
         elif target == 'R' and number >= 5000:
@@ -111,4 +111,11 @@ class FatekTarget(object):
 
 
     def read_all(self):
-        return self.client.read_coils(self.number, 20) # (start coil, number of readed bits)
+        target = self.target
+        number = self.number
+        current_value = self.current_value
+
+        if target in ['Y', 'X', 'M', 'S'] or (current_value == False and target in ['T', 'C']):
+            return self.client.read_coils(number, 20).bits # (start coil, number of readed bits)
+        elif target in ['R', 'D'] or (current_value == True and target in ['T', 'C']):
+            return self.client.read_coils(number, 20).registers # (start, number of readed bits)
