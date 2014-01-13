@@ -109,13 +109,12 @@ class FatekTarget(object):
     def _write_holding_r(self, value):
         return self.client.write_register(self.number, value)
 
-
-    def read_all(self):
+    def read_all(self, count=40):
         target = self.target
         number = self.number
         current_value = self.current_value
 
         if target in ['Y', 'X', 'M', 'S'] or (current_value == False and target in ['T', 'C']):
-            return self.client.read_coils(number, 20).bits # (start coil, number of readed bits)
+            return self.client.read_coils(number, count).bits # (start coil, number of readed bits)
         elif target in ['R', 'D'] or (current_value == True and target in ['T', 'C']):
-            return self.client.read_coils(number, 20).registers # (start, number of readed bits)
+            return self.client.read_coils(number, count).registers # (start, number of readed bits)
