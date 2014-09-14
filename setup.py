@@ -10,7 +10,6 @@ root = os.path.abspath(os.path.dirname(__file__))
 
 setup(
     name='fatek-fbs-lib',
-    install_requires=open(os.path.join(root, 'requirements.txt')).readlines(),
     version=".".join([str(x) for x in __version__]),
     description='Fatek FBs communication lib',
     author='Marcin Rim',
@@ -20,6 +19,9 @@ setup(
     test_suite='tests',
     include_package_data=True,
     zip_safe=False,
+    install_requires=[
+        'pymodbus'
+    ],
     entry_points={
         'console_scripts': [
             'fatek = fatek.tools:console',
