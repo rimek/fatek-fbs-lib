@@ -1,0 +1,32 @@
+#!env python
+from optparse import OptionParser
+from fatek import Fatek
+
+if __name__ == "__main__":
+    usage = "usage: %prog [options] action target"
+    parser = OptionParser()
+    parser.add_option('-a', '--address', help="PLCs IP address", dest="address", type="string")
+    parser.add_option('-v', '--value', help="optional value for certain actions", dest="value", type="string")
+    parser.add_option('-c', '--action', help='action to perform [read|write]', dest="action", type="string")
+    parser.add_option('-t', '--target', help='ceil/register', dest="target", type="string")
+    (opts, args) = parser.parse_args()
+
+    if not opts.address:
+        raise Exception("No address provided")
+
+    if not opts.action or not opts.target:
+        raise Exception("No address provided")
+
+    f = Fatek(opts.address)
+    if opts.action == 'read':
+        print "%s: %s" % (opts.target, f.read(opts.target))
+    elif opts.action == 'bulk_read':
+        if not opts.value:
+            raise Exception("No value (number of coils/regs to read) provided")
+        print "%s: %s" % (opts.target, f.bulk_read(opts.target, opts.value))
+    elif opts.action == 'write':
+        if not opts.value:
+            raise Exception("No value provided")
+        print "%s: %s" % (opts.target, f.write(opts.target, int(opts.value)))
+    else:
+        raise Exception("Bad action")
