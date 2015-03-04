@@ -1,14 +1,16 @@
 from pymodbus.client.sync import ModbusTcpClient
-import logging
-
 from target import FatekTarget
 
-logging.basicConfig()
-log = logging.getLogger()
-log.setLevel(logging.DEBUG)
 
 class Fatek(object):
-    def __init__(self, address='192.168.13.250'):
+    def __init__(self, address, logger=None):
+        if not logger:
+            import logging
+            self.logger = logging.getLogger(__name__)
+            self.logger.setLevel(logging.ERROR)
+        else:
+            self.logger = logger
+
         self.address = address
         self.client = ModbusTcpClient(address)
 
@@ -20,6 +22,6 @@ class Fatek(object):
         t = FatekTarget(self.client, symbol)
         return t.write(value)
 
-    def read_all(self, symbol, count):
+    def bulk_read(self, symbol, count):
         t = FatekTarget(self.client, symbol)
-        return t.read_all(count)
+        return t.read_all(int(count))

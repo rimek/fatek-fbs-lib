@@ -22,9 +22,5 @@ setup(
     install_requires=[
         'pymodbus'
     ],
-    entry_points={
-        'console_scripts': [
-            'fatek = fatek.tools:console',
-        ],
-    }
+    scripts=['bin/fatek-cli']
 )
