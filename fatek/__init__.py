@@ -1,1 +1,1 @@
-from fatek import Fatek
+from .fatek import Fatek
