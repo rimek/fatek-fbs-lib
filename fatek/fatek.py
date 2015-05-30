@@ -22,6 +22,9 @@ class Fatek(object):
         t = FatekTarget(self.client, symbol)
         return t.write(value)
 
-    def bulk_read(self, symbol, count):
-        t = FatekTarget(self.client, symbol)
+    def bulk_read(self, symbol, count, current_value=False):
+        """
+            current_value is for reading numeric values from T and C registers
+        """
+        t = FatekTarget(self.client, symbol, current_value)
         return t.read_all(int(count))

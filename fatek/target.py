@@ -33,7 +33,7 @@ class FatekTarget(object):
     def _write_holding_r(self, value):
         return self.client.write_register(self.symbol.offset, value)
 
-    def read_all(self, count=40):
+    def read_all(self, count):
         target = self.symbol.register
         number = self.symbol.offset
         current_value = self.current_value
