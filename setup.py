@@ -1,16 +1,12 @@
 #!/usr/bin/env python
-
 import os
-
 from setuptools import setup, find_packages
-
-from fatek.version import __version__
 
 root = os.path.abspath(os.path.dirname(__file__))
 
 setup(
     name='fatek-fbs-lib',
-    version=".".join([str(x) for x in __version__]),
+    version='0.1.4',
     description='Fatek FBs communication lib',
     author='Marcin Rim',
     author_email='rimek@poczta.fm',
@@ -22,5 +18,15 @@ setup(
     install_requires=[
         'pymodbus'
     ],
-    scripts=['bin/fatek-cli']
+    scripts=['bin/fatek-cli'],
+    classifiers=[
+        'Development Status :: 2 - Pre-Alpha',
+        'Intended Audience :: Developers',
+        'License :: OSI Approved :: BSD License',
+        'Operating System :: OS Independent',
+        'Programming Language :: Python',
+        'Programming Language :: Python :: 2',
+        'Programming Language :: Python :: 2.7',
+        'Topic :: Software Development :: Libraries :: Python Modules',
+    ],
 )
