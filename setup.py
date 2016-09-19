@@ -6,7 +6,7 @@ root = os.path.abspath(os.path.dirname(__file__))
 
 setup(
     name='fatek-fbs-lib',
-    version='0.1.4',
+    version='0.1.5',
     description='Fatek FBs communication lib',
     author='Marcin Rim',
     author_email='rimek@poczta.fm',
@@ -25,8 +25,7 @@ setup(
         'License :: OSI Approved :: BSD License',
         'Operating System :: OS Independent',
         'Programming Language :: Python',
-        'Programming Language :: Python :: 2',
-        'Programming Language :: Python :: 2.7',
+        'Programming Language :: Python :: 3',
         'Topic :: Software Development :: Libraries :: Python Modules',
     ],
 )

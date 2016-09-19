@@ -1,8 +1,9 @@
-from pymodbus.client.sync import ModbusTcpClient
+from pymodbus3.client.sync import ModbusTcpClient
 from target import FatekTarget
 
 
 class Fatek(object):
+
     def __init__(self, address, logger=None):
         if not logger:
             import logging

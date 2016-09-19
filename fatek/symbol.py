@@ -1,5 +1,6 @@
 from errors import InvalidTargetError
 
+
 class Symbol(object):
     register, number = None, None
 
@@ -53,9 +54,9 @@ class Symbol(object):
         }
 
         offset = offset_dict[target]
-        if target == 'C' and current_value == True and number >= 200:
+        if target == 'C' and current_value is True and number >= 200:
             number %= 200
-            offset = 9700 + 2*(number)
+            offset = 9700 + 2 * (number)
         elif target == 'R' and number >= 5000:
             number = 0
             offset = 5000
@@ -67,20 +68,20 @@ class Symbol(object):
         target = self.register
 
         allowed_numbers = {
-            'Y': (0,256),
-            'X': (0,256),
-            'M': (0,2002),
-            'S': (0,1000),
-            'T': (0,256),
-            'D': (0,2999),
-            'C': (0,256)
+            'Y': (0, 256),
+            'X': (0, 256),
+            'M': (0, 2002),
+            'S': (0, 1000),
+            'T': (0, 256),
+            'D': (0, 2999),
+            'C': (0, 256)
         }
         allowed_r_numbers = ((0, 4168), (5000, 5999))
 
         if target != 'R':
-            result = number in xrange(*allowed_numbers[target])
+            result = number in range(*allowed_numbers[target])
         else:
-            result = any([number in xrange(*numbers) for numbers in allowed_r_numbers])
+            result = any([number in range(*numbers) for numbers in allowed_r_numbers])
 
         if not result:
             raise InvalidTargetError("Not allowed coil/register number")
