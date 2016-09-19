@@ -1,5 +1,5 @@
 from pymodbus3.client.sync import ModbusTcpClient
-from target import FatekTarget
+from .target import FatekTarget
 
 
 class Fatek(object):

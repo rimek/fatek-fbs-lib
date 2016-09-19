@@ -6,17 +6,18 @@ root = os.path.abspath(os.path.dirname(__file__))
 
 setup(
     name='fatek-fbs-lib',
-    version='0.1.5',
+    version='0.1.7',
     description='Fatek FBs communication lib',
     author='Marcin Rim',
     author_email='rimek@poczta.fm',
-    url='http://rimek.org/',
+    url='https://github.com/rimek/fatek-fbs-lib',
     packages=find_packages(),
     test_suite='tests',
     include_package_data=True,
     zip_safe=False,
     install_requires=[
-        'pymodbus'
+        'pymodbus3',
+        'pyserial',
     ],
     scripts=['bin/fatek-cli'],
     classifiers=[
