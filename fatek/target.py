@@ -1,4 +1,5 @@
-from symbol import Symbol
+from .symbol import Symbol
+
 
 
 class FatekTarget(object):
