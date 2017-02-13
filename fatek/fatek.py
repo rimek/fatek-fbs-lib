@@ -4,7 +4,7 @@ from .target import FatekTarget
 
 class Fatek(object):
 
-    def __init__(self, address, logger=None):
+    def __init__(self, address, port=502, logger=None):
         if not logger:
             import logging
             self.logger = logging.getLogger(__name__)
@@ -13,7 +13,7 @@ class Fatek(object):
             self.logger = logger
 
         self.address = address
-        self.client = ModbusTcpClient(address)
+        self.client = ModbusTcpClient(address, port)
 
     def read(self, symbol):
         t = FatekTarget(self.client, symbol)
