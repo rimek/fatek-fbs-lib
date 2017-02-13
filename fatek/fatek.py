@@ -1,13 +1,10 @@
-from pymodbus.client.sync import ModbusTcpClient
-from target import FatekTarget
-import logging
+from pymodbus3.client.sync import ModbusTcpClient
+from .target import FatekTarget
 
 
 class Fatek(object):
-    """
-        Base class which handle connection to PLC
-    """
-    def __init__(self, address, logger=None):
+
+    def __init__(self, address, port=502, logger=None):
         if not logger:
             self.logger = logging.getLogger(__name__)
             self.logger.setLevel(logging.ERROR)
@@ -15,7 +12,7 @@ class Fatek(object):
             self.logger = logger
 
         self.address = address
-        self.client = ModbusTcpClient(address)
+        self.client = ModbusTcpClient(address, port)
 
     def read(self, symbol):
         target = FatekTarget(self.client, symbol)
