@@ -1,32 +1,30 @@
-#!env python
-from optparse import OptionParser
+"""Fatek FBs tool
+
+Usage:
+    fatek-cli read <symbol> [--address=<address>]
+    fatek-cli bulk-read <start-symbol> <end-symbol> [--address=<address>]
+    fatek-cli <address> write <symbol> <value> [--address=<address>]
+    fatek-cli (-h | --help)
+    fatek-cli --version
+
+    Options:
+    -a --address=<address>  PLC ip address [default: 192.168.13.250]
+    -h --help     Show this screen.
+    -v --version  Show version.
+
+"""
+from docopt import docopt
 from fatek import Fatek
 
+
 if __name__ == "__main__":
-    usage = "usage: %prog [options] action target"
-    parser = OptionParser()
-    parser.add_option('-a', '--address', help="PLCs IP address", dest="address", type="string")
-    parser.add_option('-v', '--value', help="optional value for certain actions", dest="value", type="string")
-    parser.add_option('-c', '--action', help='action to perform [read|write]', dest="action", type="string")
-    parser.add_option('-t', '--target', help='ceil/register', dest="target", type="string")
-    (opts, args) = parser.parse_args()
+    args = docopt(__doc__, version='Fatek FBs tool 0.1.4')
+    plc = Fatek(args.get('--address'))
 
-    if not opts.address:
-        raise Exception("No address provided")
+    if args['read']:
+        print "%s: %s" % (args.get('<symbol>'), plc.read(args.get('<symbol>')))
 
-    if not opts.action or not opts.target:
-        raise Exception("No address provided")
-
-    f = Fatek(opts.address)
-    if opts.action == 'read':
-        print "%s: %s" % (opts.target, f.read(opts.target))
-    elif opts.action == 'bulk_read':
-        if not opts.value:
-            raise Exception("No value (number of coils/regs to read) provided")
-        print "%s: %s" % (opts.target, f.bulk_read(opts.target, opts.value))
-    elif opts.action == 'write':
-        if not opts.value:
-            raise Exception("No value provided")
-        print "%s: %s" % (opts.target, f.write(opts.target, int(opts.value)))
-    else:
-        raise Exception("Bad action")
+    elif args['write']:
+        s = args.get('<symbol>')
+        v = args.get('<value>')
+        print "%s -> %s: %s" % (s, v, plc.bulk_read(s, v))
