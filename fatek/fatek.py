@@ -1,4 +1,8 @@
-from pymodbus3.client.sync import ModbusTcpClient
+try:
+    from pymodbus3.client.sync import ModbusTcpClient
+except:
+    from pymodbus.client.sync import ModbusTcpClient
+
 from .target import FatekTarget
 
 
