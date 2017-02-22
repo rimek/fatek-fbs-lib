@@ -31,10 +31,7 @@ class FatekTarget(object):
 
     def _read_holding_r(self):
         # (start , number of readed bytes)
-        return (
-            self.client
-            .read_holding_registers(self.symbol.offset, 1).registers[0]
-        )
+        return self.client.read_holding_registers(self.symbol.offset, 1).registers[0]
 
     def _write_holding_r(self, value):
         return self.client.write_register(self.symbol.offset, value)
