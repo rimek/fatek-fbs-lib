@@ -1,1 +1,0 @@
-from .fatek import Fatek
