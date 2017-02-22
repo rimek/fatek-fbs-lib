@@ -1,4 +1,4 @@
-from errors import InvalidTargetError
+from .errors import InvalidTargetError
 
 
 class Symbol(object):
