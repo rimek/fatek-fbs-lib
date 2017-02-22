@@ -90,10 +90,7 @@ class Symbol(object):
         if self.target != 'R':
             result = self.number in range(*self.allowed_numbers[self.target])
         else:
-            result = any(
-                [self.number in range(*numbers)
-                 for numbers in self.allowed_r_numbers]
-            )
+            result = any([self.number in range(*numbers) for numbers in self.allowed_r_numbers])
 
         if not result:
             raise InvalidTargetError("Not allowed coil/register number")

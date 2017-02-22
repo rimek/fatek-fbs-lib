@@ -44,16 +44,10 @@ class FatekTarget(object):
         number = self.symbol.offset
         current_value = self.current_value
 
-        if (
-            target in ['Y', 'X', 'M', 'S'] or
-            (current_value is False and target in ['T', 'C'])
-        ):
+        if target in ['Y', 'X', 'M', 'S'] or (current_value is False and target in ['T', 'C']):
             # (start coil, number of readed bits)
             return self.client.read_coils(number, count).bits
 
-        elif (
-            target in ['R', 'D'] or
-            (current_value is True and target in ['T', 'C'])
-        ):
+        elif target in ['R', 'D'] or (current_value is True and target in ['T', 'C']):
             # (start, number of readed bits)
             return self.client.read_holding_registers(number, count).registers
