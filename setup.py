@@ -16,7 +16,8 @@ setup(
     include_package_data=True,
     zip_safe=False,
     install_requires=[
-        'pymodbus3',
+        "pymodbus3; python_version >= '3.0'",
+        "pymodbus; python_version < '3.0'",
         'pyserial',
     ],
     scripts=['bin/fatek-cli'],

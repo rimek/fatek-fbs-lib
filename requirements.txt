@@ -1,2 +1,3 @@
-pymodbus3 == 1.0.0
-pyserial == 2.7
+pymodbus; python_version < '3.0'
+pymodbus3; python_version >= '3.0'
+pyserial

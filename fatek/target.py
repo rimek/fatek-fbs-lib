@@ -23,7 +23,8 @@ class FatekTarget(object):
             self.write = self._write_holding_r
 
     def _read_coil(self):
-        return self.client.read_coils(self.symbol.offset, 1).bits[0]  # (start coil, number of readed bits)
+        # (start coil, number of readed bits)
+        return self.client.read_coils(self.symbol.offset, 1).bits[0]
 
     def _write_coil(self, value):
         return self.client.write_coil(self.symbol.offset, value)
@@ -40,8 +41,10 @@ class FatekTarget(object):
         number = self.symbol.offset
         current_value = self.current_value
 
-        if target in ['Y', 'X', 'M', 'S'] or (current_value == False and target in ['T', 'C']):
-            return self.client.read_coils(number, count).bits  # (start coil, number of readed bits)
+        if target in ['Y', 'X', 'M', 'S'] or (current_value is False and target in ['T', 'C']):
+            # (start coil, number of readed bits)
+            return self.client.read_coils(number, count).bits
 
-        elif target in ['R', 'D'] or (current_value == True and target in ['T', 'C']):
-            return self.client.read_holding_registers(number, count).registers  # (start, number of readed bits)
+        elif target in ['R', 'D'] or (current_value is True and target in ['T', 'C']):
+            # (start, number of readed bits)
+            return self.client.read_holding_registers(number, count).registers
