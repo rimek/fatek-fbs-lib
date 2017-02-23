@@ -1,7 +1,9 @@
 try:
     from pymodbus3.client.sync import ModbusTcpClient
-except:
+except ImportError:
     from pymodbus.client.sync import ModbusTcpClient
+
+import logging
 
 from .target import FatekTarget
 

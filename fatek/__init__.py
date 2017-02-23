@@ -1,4 +1,1 @@
-from .fatek import Fatek
-
-
-__all__ = ["Fatek"]
+from .fatek import Fatek  # noqa
