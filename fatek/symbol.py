@@ -2,7 +2,6 @@ from .errors import InvalidTargetError
 
 
 class Symbol(object):
-
     """
         Representation of PLC value
 
@@ -22,6 +21,7 @@ class Symbol(object):
         C(0-199)     : 9500 - 9699 (16bit, current_value=True)
         C(200-255)   : 9700 - 9811 (32bit, current_value=True) double offset
     """
+
     register = None
     number = None
 
@@ -52,7 +52,7 @@ class Symbol(object):
     def __init__(self, symbol, current_value=True):
         self.current_value = current_value
 
-        self.type = symbol[:1]
+        self.register = symbol[:1]
         self.number = int(symbol[1:])
 
         self._verify_type()
@@ -61,34 +61,33 @@ class Symbol(object):
         self.offset = self.__calculate_offset()
 
     def __str__(self):
-        return "%s%s" % (self.type, self.number)
+        return "%s%s" % (self.register, self.number)
 
     def __unicode__(self):
         return str(self)
 
     def __calculate_offset(self):
-
-        target = self.type
+        register = self.register
         number = self.number
         current_value = self.current_value
 
-        offset = self.offset_dict[target]
-        if target == 'C' and current_value and number >= 200:
+        offset = self.offset_dict[register]
+        if register == 'C' and current_value and number >= 200:
             number %= 200
             offset = 9700 + 2 * (number)
-        elif target == 'R' and number >= 5000:
+        elif register == 'R' and number >= 5000:
             number = 0
             offset = 5000
 
         return number + offset
 
     def _verify_type(self):
-        if not self.type or self.type not in self.offset_dict.keys():
+        if not self.register or self.register not in self.offset_dict.keys():
             raise InvalidTargetError("Not allowed coil/register type")
 
     def _verify_number(self):
-        if self.target != 'R':
-            result = self.number in range(*self.allowed_numbers[self.target])
+        if self.register != 'R':
+            result = self.number in range(*self.allowed_numbers[self.register])
         else:
             result = any([self.number in range(*numbers) for numbers in self.allowed_r_numbers])
 

@@ -22,9 +22,9 @@ if __name__ == "__main__":
     plc = Fatek(args.get('--address'))
 
     if args['read']:
-        print "%s: %s" % (args.get('<symbol>'), plc.read(args.get('<symbol>')))
+        print("%s: %s" % (args.get('<symbol>'), plc.read(args.get('<symbol>'))))
 
     elif args['write']:
         s = args.get('<symbol>')
         v = args.get('<value>')
-        print "%s -> %s: %s" % (s, v, plc.bulk_read(s, v))
+        print("%s -> %s: %s" % (s, v, plc.bulk_read(s, v)))
