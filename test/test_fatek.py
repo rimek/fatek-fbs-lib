@@ -1,6 +1,6 @@
 from unittest.case import TestCase
 
-from fatek.fatek import Fatek
+from fatek import Fatek
 
 
 class TestFatek(TestCase):

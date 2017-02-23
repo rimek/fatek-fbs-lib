@@ -1,4 +1,4 @@
 from .fatek import Fatek
 
 
-Fatek
+__all__ = ["Fatek"]
