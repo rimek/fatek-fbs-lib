@@ -25,9 +25,10 @@ class FatekTarget(object):
     # - page 15
     quantity_limit_of_registers = 125
 
-    def __init__(self, client, symbol_str, current_value=False):
+    def __init__(self, client, symbol_str, unit=None, current_value=False):
         self.client = client
         self.symbol = Symbol(symbol_str, current_value=current_value)
+        self.unit = unit
 
         self._assign_functions()
 
@@ -39,12 +40,12 @@ class FatekTarget(object):
             # params: (start, number of readed bits)
             if count > self.quantity_limit_of_coils:
                 raise InvalidTargetError()
-            return self.client.read_coils(number, count).bits
+            return self.client.read_coils(number, count, **self._build_kwargs()).bits
         else:
             # params: (start, number of readed bits)
             if count > self.quantity_limit_of_registers:
                 raise InvalidTargetError()
-            return self.client.read_holding_registers(number, count).registers
+            return self.client.read_holding_registers(number, count, **self._build_kwargs()).registers
 
     def _assign_functions(self):
         if self.symbol.is_coil():
@@ -54,16 +55,26 @@ class FatekTarget(object):
             self.read = self._read_holding_r
             self.write = self._write_holding_r
 
+    def _build_kwargs(self):
+        args = {}
+        if self.unit:
+            args['unit'] = self.unit
+        return args
+
     def _read_coil(self):
+        kwargs = self._build_kwargs()
         # params: (start coil, number of readed bits)
-        return self.client.read_coils(self.symbol.offset, 1).bits[0]
+        return self.client.read_coils(self.symbol.offset, 1, **kwargs).bits[0]
 
     def _write_coil(self, value):
-        return self.client.write_coil(self.symbol.offset, value)
+        kwargs = self._build_kwargs()
+        return self.client.write_coil(self.symbol.offset, value, **kwargs)
 
     def _read_holding_r(self):
+        kwargs = self._build_kwargs()
         # params: (start , number of readed bytes)
-        return self.client.read_holding_registers(self.symbol.offset, 1).registers[0]
+        return self.client.read_holding_registers(self.symbol.offset, 1, **kwargs).registers[0]
 
     def _write_holding_r(self, value):
-        return self.client.write_register(self.symbol.offset, value)
+        kwargs = self._build_kwargs()
+        return self.client.write_register(self.symbol.offset, value, **kwargs)

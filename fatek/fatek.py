@@ -20,17 +20,17 @@ class Fatek(object):
         self.address = address
         self.client = ModbusTcpClient(address, port)
 
-    def read(self, symbol):
-        target = FatekTarget(self.client, symbol)
+    def read(self, symbol, unit=0x00):
+        target = FatekTarget(self.client, symbol, unit)
         return target.read()
 
-    def write(self, symbol, value=True):
-        target = FatekTarget(self.client, symbol)
+    def write(self, symbol, unit=0x00, value=True):
+        target = FatekTarget(self.client, symbol, unit)
         return target.write(value)
 
-    def bulk_read(self, symbol, count, current_value=False):
+    def bulk_read(self, symbol, count, unit=0x00, current_value=False):
         """
             current_value is for reading numeric values from T and C registers
         """
-        target = FatekTarget(self.client, symbol, current_value)
+        target = FatekTarget(self.client, symbol, unit, current_value)
         return target.read_all(int(count))

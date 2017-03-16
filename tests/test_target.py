@@ -26,25 +26,49 @@ class TestTarget(TestCase):
         FatekTarget(self.client, 'R333').read()
         self.client.read_holding_registers.assert_called_once_with(333, 1)
 
+    def test_R333_with_unit(self):
+        FatekTarget(self.client, 'R333', unit=0x01).read()
+        self.client.read_holding_registers.assert_called_once_with(333, 1, unit=0x01)
+
     def test_D333(self):
         FatekTarget(self.client, 'D333').write(593)
         self.client.write_register.assert_called_once_with(6333, 593)
+
+    def test_D333_with_unit(self):
+        FatekTarget(self.client, 'D333', unit=0x01).write(593)
+        self.client.write_register.assert_called_once_with(6333, 593, unit=0x01)
 
     def test_T255c(self):
         FatekTarget(self.client, 'T255', current_value=False).read()
         self.client.read_coils.assert_called_once_with(9255, 1)
 
+    def test_T255c_with_unit(self):
+        FatekTarget(self.client, 'T255', unit=0x01, current_value=False).read()
+        self.client.read_coils.assert_called_once_with(9255, 1, unit=0x01)
+
     def test_T255r(self):
         FatekTarget(self.client, 'T255', current_value=True).read()
         self.client.read_holding_registers.assert_called_once_with(9255, 1)
+
+    def test_T255r(self):
+        FatekTarget(self.client, 'T255', unit=0x01, current_value=True).read()
+        self.client.read_holding_registers.assert_called_once_with(9255, 1, unit=0x01)
 
     def test_M300_readall(self):
         FatekTarget(self.client, 'M300').read_all(50)
         self.client.read_coils.assert_called_once_with(2300, 50)
 
+    def test_M300_readall_with_unit(self):
+        FatekTarget(self.client, 'M300', unit=0x01).read_all(50)
+        self.client.read_coils.assert_called_once_with(2300, 50, unit=0x01)
+
     def test_R300_readall(self):
         FatekTarget(self.client, 'R300').read_all(55)
         self.client.read_holding_registers.assert_called_once_with(300, 55)
+
+    def test_R300_readall_with_unit(self):
+        FatekTarget(self.client, 'R300', unit=0x01).read_all(55)
+        self.client.read_holding_registers.assert_called_once_with(300, 55, unit=0x01)
 
     def test_coil_range_2000(self):
         with self.assertRaises(InvalidTargetError):
