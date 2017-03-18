@@ -21,31 +21,26 @@ class FatekTarget(object):
 
     def __init__(self, client, symbol_str, current_value=False):
         self.client = client
-        self.current_value = current_value
-        self.symbol = Symbol(symbol_str)
+        self.symbol = Symbol(symbol_str, current_value=current_value)
 
         self._assign_functions()
 
     def read_all(self, count):
         """ Read all available stuff from PLC """
-        target = self.symbol.register
         number = self.symbol.offset
 
-        if target in ['Y', 'X', 'M', 'S'] or (not self.current_value and target in ['T', 'C']):
+        if self.symbol.isCoil():
             # params: (start, number of readed bits)
             return self.client.read_coils(number, count).bits
-
-        elif target in ['R', 'D'] or (self.current_value and target in ['T', 'C']):
+        else:
             # params: (start, number of readed bits)
             return self.client.read_holding_registers(number, count).registers
 
     def _assign_functions(self):
-        target = self.symbol.register
-
-        if target in ['Y', 'X', 'M', 'S']:
+        if self.symbol.isCoil():
             self.read = self._read_coil
             self.write = self._write_coil
-        elif target in ['R', 'D', 'C', 'T']:
+        else:
             self.read = self._read_holding_r
             self.write = self._write_holding_r
 
