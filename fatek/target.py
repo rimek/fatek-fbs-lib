@@ -1,3 +1,5 @@
+from fatek.errors import InvalidTargetError
+
 from .symbol import Symbol
 
 
@@ -19,6 +21,13 @@ class FatekTarget(object):
     read = None
     write = None
 
+    # MODBUS Application Protocol Specification V1.1b 
+    # http://www.modbus.org/docs/Modbus_Application_Protocol_V1_1b.pdf
+    ## page 12
+    quantity_limit_of_coils = 2000
+    ## page 15
+    quantity_limit_of_registers = 125
+
     def __init__(self, client, symbol_str, current_value=False):
         self.client = client
         self.symbol = Symbol(symbol_str, current_value=current_value)
@@ -31,9 +40,13 @@ class FatekTarget(object):
 
         if self.symbol.isCoil():
             # params: (start, number of readed bits)
+            if count > self.quantity_limit_of_coils:
+                raise InvalidTargetError()
             return self.client.read_coils(number, count).bits
         else:
             # params: (start, number of readed bits)
+            if count > self.quantity_limit_of_registers:
+                raise InvalidTargetError()
             return self.client.read_holding_registers(number, count).registers
 
     def _assign_functions(self):

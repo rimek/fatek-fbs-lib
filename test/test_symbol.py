@@ -1,5 +1,6 @@
 from unittest.case import TestCase
 
+from fatek.errors import InvalidTargetError
 from fatek.symbol import Symbol
 
 
@@ -54,3 +55,11 @@ class TestSymbol(TestCase):
         s = Symbol('C255', current_value=True)
         self.assertEqual(s.offset, 9810)
         self.assertFalse(s.isCoil())
+
+    def test_not_found(self):
+        with self.assertRaises(InvalidTargetError):
+            Symbol('Z33')
+
+    def test_X_not_found(self):
+        with self.assertRaises(InvalidTargetError):
+            Symbol('X9999')
