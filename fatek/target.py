@@ -14,18 +14,15 @@ class FatekTarget(object):
     client = None  # Fatek instance
     symbol = None  # Symbol
 
-    # TODO figure out whats that
-    current_value = False  # whether is coil or register (?)
-
     # function handlers
     read = None
     write = None
 
-    # MODBUS Application Protocol Specification V1.1b 
+    # MODBUS Application Protocol Specification V1.1b
     # http://www.modbus.org/docs/Modbus_Application_Protocol_V1_1b.pdf
-    ## page 12
+    # - page 12
     quantity_limit_of_coils = 2000
-    ## page 15
+    # - page 15
     quantity_limit_of_registers = 125
 
     def __init__(self, client, symbol_str, current_value=False):
