@@ -74,7 +74,8 @@ class Symbol(object):
         offset = self.offset_dict[register]
         if register == 'C' and current_value and number >= 200:
             number %= 200
-            offset = 9700 + 2 * (number)
+            number = number + number
+            offset = 9700
         elif register == 'R' and number >= 5000:
             number = 0
             offset = 5000
