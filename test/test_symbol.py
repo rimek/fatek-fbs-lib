@@ -31,6 +31,11 @@ class TestSymbol(TestCase):
         self.assertEqual(s.offset, 333)
         self.assertFalse(s.isCoil())
 
+    def test_R5234_is_5000(self):
+        s = Symbol('R5234')
+        self.assertEqual(s.offset, 5000)
+        self.assertFalse(s.isCoil())
+
     def test_D593(self):
         s = Symbol('D593')
         self.assertEqual(s.offset, 6593)
