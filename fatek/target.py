@@ -35,7 +35,7 @@ class FatekTarget(object):
         """ Read all available stuff from PLC """
         number = self.symbol.offset
 
-        if self.symbol.isCoil():
+        if self.symbol.is_coil():
             # params: (start, number of readed bits)
             if count > self.quantity_limit_of_coils:
                 raise InvalidTargetError()
@@ -47,7 +47,7 @@ class FatekTarget(object):
             return self.client.read_holding_registers(number, count).registers
 
     def _assign_functions(self):
-        if self.symbol.isCoil():
+        if self.symbol.is_coil():
             self.read = self._read_coil
             self.write = self._write_coil
         else:
