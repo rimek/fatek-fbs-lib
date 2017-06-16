@@ -74,7 +74,8 @@ class Symbol(object):
         offset = self.offset_dict[register]
         if register == 'C' and current_value and number >= 200:
             number %= 200
-            offset = 9700 + 2 * (number)
+            number += number
+            offset = 9700
         elif register == 'R' and number >= 5000:
             number = 0
             offset = 5000
@@ -89,7 +90,18 @@ class Symbol(object):
         if self.register != 'R':
             result = self.number in range(*self.allowed_numbers[self.register])
         else:
-            result = any([self.number in range(*numbers) for numbers in self.allowed_r_numbers])
+            result = any([self.number in range(*numbers)
+                          for numbers in self.allowed_r_numbers])
 
         if not result:
             raise InvalidTargetError("Not allowed coil/register number")
+
+    def is_coil(self):
+        if self.register in ['Y', 'X', 'M', 'S']:
+            return True
+        elif self.register in ['R', 'D']:
+            return False
+        elif self.register in ['T', 'C'] and self.current_value:
+            return False
+        elif self.register in ['T', 'C'] and not self.current_value:
+            return True

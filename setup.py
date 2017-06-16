@@ -19,6 +19,7 @@ setup(
         "pymodbus3; python_version >= '3.0'",
         "pymodbus; python_version < '3.0'",
         'pyserial',
+        'mock',
     ],
     scripts=['bin/fatek-cli'],
     classifiers=[

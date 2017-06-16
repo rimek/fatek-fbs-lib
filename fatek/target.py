@@ -1,3 +1,5 @@
+from fatek.errors import InvalidTargetError
+
 from .symbol import Symbol
 
 
@@ -12,40 +14,43 @@ class FatekTarget(object):
     client = None  # Fatek instance
     symbol = None  # Symbol
 
-    # TODO figure out whats that
-    current_value = False  # whether is coil or register (?)
-
     # function handlers
     read = None
     write = None
 
+    # MODBUS Application Protocol Specification V1.1b
+    # http://www.modbus.org/docs/Modbus_Application_Protocol_V1_1b.pdf
+    # - page 12
+    quantity_limit_of_coils = 2000
+    # - page 15
+    quantity_limit_of_registers = 125
+
     def __init__(self, client, symbol_str, current_value=False):
         self.client = client
-        self.current_value = current_value
-        self.symbol = Symbol(symbol_str)
+        self.symbol = Symbol(symbol_str, current_value=current_value)
 
         self._assign_functions()
 
     def read_all(self, count):
         """ Read all available stuff from PLC """
-        target = self.symbol.register
         number = self.symbol.offset
 
-        if target in ['Y', 'X', 'M', 'S'] or (not self.current_value and target in ['T', 'C']):
+        if self.symbol.is_coil():
             # params: (start, number of readed bits)
+            if count > self.quantity_limit_of_coils:
+                raise InvalidTargetError()
             return self.client.read_coils(number, count).bits
-
-        elif target in ['R', 'D'] or (self.current_value and target in ['T', 'C']):
+        else:
             # params: (start, number of readed bits)
+            if count > self.quantity_limit_of_registers:
+                raise InvalidTargetError()
             return self.client.read_holding_registers(number, count).registers
 
     def _assign_functions(self):
-        target = self.symbol.register
-
-        if target in ['Y', 'X', 'M', 'S']:
+        if self.symbol.is_coil():
             self.read = self._read_coil
             self.write = self._write_coil
-        elif target in ['R', 'D', 'C', 'T']:
+        else:
             self.read = self._read_holding_r
             self.write = self._write_holding_r
 
