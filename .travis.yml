@@ -14,4 +14,10 @@ script:
 after_success:
 - coverage report
 - coveralls
-
+deploy:
+  provider: pypi
+  user: rimek
+  password:
+    secure: HOmLSZUX84PLayKTkyD8z9v39ZxhfH9Q22PbUUks76PkFpO5J5J2e1Wu16jlweKFFSI535QFwc1kjfZj/8wiuzRqJ3wgZmmeSX4TJQvaS8vHYP7WVAzjLh0OvYFqHZEfRHI63nJjoY18X7sPRlH5lnVoMQb33ZQh9BaNeAoVQwnX/ePnZpbiib6X0l8BmInJEr1LVZZTWcPpv3a6JA6LUYZ5y3B5F/5qpFUByngP+F8pJmWsL7Wo2p6nqSl8rNbrx8YRZFAu1YZspIL+3k1Zl3k0t1h6jl+8dd0LMYZwPAgW/Hd9ssl9iHM4H9DHaCzFc8pzOBrsl3afdSczHPWERwyRcW9XZwFyhm4yXFsu3NQ1NVrhCzHfMTBdwcwVdYQUIAwJC19QRfv+tCP7u9tmr6NTyz6H+G8U7UJctl+tgWnYgSXl3XJdwIzD0UFcKRBXlEIceHF9RujY6evYFTFFblHeyTPXXgzO4CLFTAfa5nvA+AsXfKFs4vnhJY3IZnAiG2Epdc3fg4NEipn4Zr5ODl3yeRCnISWAbVENUzIzDfd6FGHO983LEgXpyYmf/9E4Vb7jJGk+kDAk4RAm8CViZsuUnzAVHgku2z+3HmZXz+nBoyC0cVxHyVhxaKfz5Xg4QKfyUzy4Tamitbor4+AhMBQcUzQnR/AtJJMjmqByb74=
+  on:
+    tags: true
