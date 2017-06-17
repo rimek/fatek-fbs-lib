@@ -1,12 +1,15 @@
 #!/usr/bin/env python
 import os
-from setuptools import setup, find_packages
+
+from setuptools import find_packages, setup
+
+VERSION = '0.1.8'
 
 root = os.path.abspath(os.path.dirname(__file__))
 
 setup(
     name='fatek-fbs-lib',
-    version='0.1.7',
+    version=VERSION,
     description='Fatek FBs communication lib',
     author='Marcin Rim',
     author_email='rimek@poczta.fm',
