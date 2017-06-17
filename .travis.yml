@@ -6,10 +6,12 @@ python:
 - '3.5'
 install:
 - pip install -r requirements.txt
-- pip install pep8
+- pip install pep8==1.7.0
 - pip install python-coveralls
 script:
 - py.test --cov=fatek --cov-report xml
+- pep8 --version
+- pep8 --help
 - pep8 . --max-line-length=120
 after_success:
 - coverage report
