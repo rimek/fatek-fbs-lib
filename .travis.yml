@@ -9,7 +9,7 @@ install:
 - pip install pep8
 - pip install python-coveralls
 script:
-- pytest --cov=fatek --cov-report xml
+- py.test --cov=fatek --cov-report xml
 - pep8 . --max-line-length=120
 after_success:
 - coverage report
