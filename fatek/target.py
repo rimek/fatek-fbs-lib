@@ -1,4 +1,4 @@
-from fatek.errors import InvalidTargetError
+from .errors import InvalidTargetError
 
 from .symbol import Symbol
 

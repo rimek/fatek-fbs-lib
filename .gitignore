@@ -1,4 +1,9 @@
 *.pyc
 build/
 dist/
-fatek_fbs_lib.egg-info/
+*.egg-info/
+
+.ropeproject
+.coverage
+.cache
+coverage.xml
