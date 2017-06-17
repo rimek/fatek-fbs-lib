@@ -2,16 +2,15 @@ sudo: false
 language: python
 python:
 - '2.7'
-- '3.4'
 - '3.5'
+- '3.6'
+- 'nightly'
 install:
 - pip install -r requirements.txt
 - pip install pep8==1.7.0
 - pip install python-coveralls
 script:
 - py.test --cov=fatek --cov-report xml
-- pep8 --version
-- pep8 --help
 - pep8 . --max-line-length=120
 after_success:
 - coverage report
