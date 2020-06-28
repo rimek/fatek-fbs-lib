@@ -3,7 +3,7 @@ import os
 
 from setuptools import find_packages, setup
 
-VERSION = '0.1.8'
+VERSION = '0.1.9'
 
 root = os.path.abspath(os.path.dirname(__file__))
 
