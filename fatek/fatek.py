@@ -1,7 +1,4 @@
-try:
-    from pymodbus3.client.sync import ModbusTcpClient
-except ImportError:
-    from pymodbus.client.sync import ModbusTcpClient
+from pymodbus.client.tcp import ModbusTcpClient
 
 import logging
 
